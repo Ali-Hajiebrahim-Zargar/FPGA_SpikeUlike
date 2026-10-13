@@ -1,0 +1,21 @@
+Full Vivado src snapshot archive contents:
+
+src/ad7266_axis_driver.vhd	10630 bytes
+src/ad7266_spi_sine_model.vhd	6129 bytes
+src/axis_cmd_packet_router.vhd	24209 bytes
+src/axis_dac8568_packet_parser.vhd	19075 bytes
+src/axis_dac8568_waveform_driver.vhd	12102 bytes
+src/axis_spike_programmer.vhd	28683 bytes
+src/axis_telemetry_data_manager.vhd	15123 bytes
+src/dac8568_channel_scheduler.vhd	24940 bytes
+src/dac8568_frame_builder.vhd	1018 bytes
+src/dac8568_init_controller.vhd	6440 bytes
+src/dac8568_spi_master.vhd	7113 bytes
+src/dac8568_waveform_memory.vhd	3329 bytes
+src/en_gmii2rgmii.edn	304472 bytes
+src/en_gmii2rgmii_ksz9031_timing.tcl	6474 bytes
+src/en_gmii2rgmii_loc.tcl	1887 bytes
+src/fpga_timestamp_timer_16.vhd	1684 bytes
+src/Mercury_XU5_PE1.tcl	25831 bytes
+src/Mercury_XU5_PE1.vhd	23782 bytes
+src/Mercury_XU5_timing.tcl	1391 bytes

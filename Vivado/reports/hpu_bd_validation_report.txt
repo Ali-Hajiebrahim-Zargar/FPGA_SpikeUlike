@@ -1,0 +1,28 @@
+============================================================
+UNCONNECTED HPU INPUT PINS
+============================================================
+/hpu_core_0/M_AXIS_TREADY
+/hpu_core_0/S_AXIS_TDATA
+/hpu_core_0/S_AXIS_TLAST
+/hpu_core_0/S_AXIS_TVALID
+/hpu_core_0/S_AXI_ARADDR
+/hpu_core_0/S_AXI_ARVALID
+/hpu_core_0/S_AXI_AWADDR
+/hpu_core_0/S_AXI_AWVALID
+/hpu_core_0/S_AXI_BREADY
+/hpu_core_0/S_AXI_RREADY
+/hpu_core_0/S_AXI_WDATA
+/hpu_core_0/S_AXI_WSTRB
+/hpu_core_0/S_AXI_WVALID
+
+============================================================
+UNCONNECTED HPU SLAVE INTERFACES
+============================================================
+/hpu_core_0/PAER_RX_AUX
+/hpu_core_0/S_AXIS
+
+============================================================
+BLOCK DESIGN VALIDATION
+============================================================
+VALIDATION COMMAND ERROR:
+invalid command name "redirect"

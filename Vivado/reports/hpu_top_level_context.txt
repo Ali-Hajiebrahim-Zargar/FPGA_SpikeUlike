@@ -1,0 +1,39 @@
+============================================================
+PROJECT TOP LEVEL
+============================================================
+TOP: Mercury_XU5_wrapper
+
+============================================================
+POSSIBLE TOP AND WRAPPER FILES
+============================================================
+
+------------------------------------------------------------
+FILE: C:/xu5/Mercury_XU5_PE1_Reference_Design/Vivado/ME-XU5-5EV-2I-D12E/Mercury_XU5_PE1.gen/sources_1/bd/Mercury_XU5/hdl/Mercury_XU5_wrapper.vhd
+FILE_TYPE:         VHDL
+USED_IN_SYNTHESIS: 1
+IS_GENERATED:      0
+------------------------------------------------------------
+HAS HPU_AUX_PAER_ADDR: 0
+HAS HPU_AUX_PAER_REQ:  0
+HAS HPU_AUX_PAER_ACK:  0
+FILE SIZE:             9349
+MODIFIED:              Sat Jul 18 17:13:23 +0200 2026
+
+------------------------------------------------------------
+FILE: C:/xu5/Mercury_XU5_PE1_Reference_Design/src/Mercury_XU5_PE1.vhd
+FILE_TYPE:         VHDL
+USED_IN_SYNTHESIS: 1
+IS_GENERATED:      0
+------------------------------------------------------------
+HAS HPU_AUX_PAER_ADDR: 0
+HAS HPU_AUX_PAER_REQ:  0
+HAS HPU_AUX_PAER_ACK:  0
+FILE SIZE:             23782
+MODIFIED:              Thu Jun 18 23:14:41 +0200 2026
+
+============================================================
+BLOCK DESIGN PORTS
+============================================================
+HPU_AUX_PAER_ADDR: PRESENT, DIR=I, LEFT=8, RIGHT=0
+HPU_AUX_PAER_REQ: PRESENT, DIR=I, LEFT=, RIGHT=
+HPU_AUX_PAER_ACK: PRESENT, DIR=O, LEFT=, RIGHT=

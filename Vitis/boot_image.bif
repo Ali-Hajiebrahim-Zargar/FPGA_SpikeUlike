@@ -1,0 +1,6 @@
+the_ROM_image:
+{
+    [bootloader, destination_cpu=a53-0] C:/vitis_dac8568/platform/export/platform/sw/boot/fsbl.elf
+    [destination_device=pl] C:/xu5/Mercury_XU5_PE1_Reference_Design/Vivado/ME-XU5-5EV-2I-D12E/Mercury_XU5_PE1.runs/impl_1/Mercury_XU5_wrapper.bit
+    [destination_cpu=a53-0] C:/vitis_dac8568/lwip_echo_server/build/lwip_echo_server.elf
+}

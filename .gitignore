@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Vivado generated/build outputs
+*.jou
+*.log
+*.str
+*.dmp
+*.wdb
+*.bit
+*.bin
+*.xsa
+*.ltx
+*.hw
+*.runs/
+*.cache/
+*.gen/
+*.sim/
+*.ip_user_files/
+.Xil/
+
+# Vitis generated/build outputs
+build/
+Debug/
+Release/
+.ide/
+_ide/
+platform/export/
+*.elf
+BOOT.BIN
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
