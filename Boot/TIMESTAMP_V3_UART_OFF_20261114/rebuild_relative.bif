@@ -1,0 +1,6 @@
+the_ROM_image:
+{
+    [bootloader, destination_cpu=a53-0] fsbl.elf
+    [destination_device=pl] TIMESTAMP_1US_V3_XU5_TEST.bit
+    [destination_cpu=a53-0] lwip_echo_server.elf
+}
