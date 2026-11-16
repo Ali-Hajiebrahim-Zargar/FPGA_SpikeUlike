@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.21)
+project(MercuryXU5Native LANGUAGES CXX VERSION 0.1.0)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+option(XU5_BUILD_GUI "Build Qt6 native Windows GUI" ON)
+
+add_library(xu5_protocol INTERFACE)
+target_include_directories(xu5_protocol INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+if(XU5_BUILD_GUI)
+    find_package(Qt6 6.5 REQUIRED COMPONENTS Widgets Network)
+    add_executable(Mercury_XU5_GUI WIN32 src/main.cpp)
+    target_link_libraries(Mercury_XU5_GUI PRIVATE xu5_protocol Qt6::Widgets Qt6::Network)
+    if(MSVC)
+        target_compile_options(Mercury_XU5_GUI PRIVATE /W4 /permissive- /EHsc)
+    else()
+        target_compile_options(Mercury_XU5_GUI PRIVATE -Wall -Wextra -Wpedantic)
+    endif()
+    set_target_properties(Mercury_XU5_GUI PROPERTIES
+        WIN32_EXECUTABLE ON
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+    if(WIN32)
+        install(TARGETS Mercury_XU5_GUI RUNTIME DESTINATION .)
+    endif()
+endif()
+
+enable_testing()
+add_executable(xu5_protocol_tests tests/test_protocol.cpp)
+target_link_libraries(xu5_protocol_tests PRIVATE xu5_protocol)
+add_test(NAME protocol_compatibility COMMAND xu5_protocol_tests)
+add_executable(xu5_core_benchmark tests/bench_core.cpp)
+target_link_libraries(xu5_core_benchmark PRIVATE xu5_protocol)
