@@ -22,10 +22,17 @@ function CopyFile($src,$dest) {
  Copy-Item -LiteralPath $src -Destination $out -Force
  Write-Host "STAGED $dest"
 }
-if(!(Get-Command git.exe -ErrorAction SilentlyContinue)){throw "Install Git for Windows first."}
+# WinGet installs Git to Program Files; already-open PowerShell sessions may have a stale PATH.
+$gitCandidate="C:\Program Files\Git\cmd\git.exe"
+if((Test-Path -LiteralPath $gitCandidate) -and !(Get-Command git.exe -ErrorAction SilentlyContinue)){
+ $env:PATH="C:\Program Files\Git\cmd;$env:PATH"
+}
+if(!(Get-Command git.exe -ErrorAction SilentlyContinue)){throw "Git executable still missing. Open a new PowerShell or check C:\Program Files\Git\cmd\git.exe."}
 AssertHash $boot "B4AAB46FD459E4A9FB3A96BE7F6241C44B65090F999963F7367645BAF20C28CF"
-AssertHash $golden "F7F923C492189299F45C1EDEDD88A4F769400B870209B16526C6765FCB7210AB"
-if(Test-Path -LiteralPath $WorkingCopy){throw "WorkingCopy already exists. Supply a new -WorkingCopy path."}
+# Golden is only verified to exist: no assumed SHA-256. Never write to this path.
+if(!(Test-Path -LiteralPath $golden -PathType Leaf)){throw "Golden BOOT.BIN missing; abort to avoid confusing boot versions: $golden"}
+Write-Host "GOLDEN_SHA256=$((Get-FileHash -LiteralPath $golden -Algorithm SHA256).Hash)"
+if(Test-Path -LiteralPath $WorkingCopy){throw "Destination already exists and will not be overwritten: $WorkingCopy. Use a fresh -WorkingCopy path."}
 & git.exe clone --branch $branch --single-branch $repo $WorkingCopy
 if($LASTEXITCODE -ne 0){throw "Git clone failed"}
 
@@ -72,7 +79,9 @@ if(Test-Path -LiteralPath $bif){CopyFile $bif "Boot\TIMESTAMP_V3_UART_OFF_202611
 # Optional actual Vivado 2025.1 project Tcl and block-design Tcl export.
 if($VivadoXpr){
  if(!(Test-Path -LiteralPath $VivadoXpr -PathType Leaf)){throw "Vivado XPR missing: $VivadoXpr"}
- $vivado="C:\Xilinx\2025.1\Vivado\bin\vivado.bat"
+ $vivadoCandidates=@("C:\Xilinx\Vivado\2025.1\bin\vivado.bat","C:\Xilinx\2025.1\Vivado\bin\vivado.bat")
+ $vivado=$vivadoCandidates | Where-Object {Test-Path -LiteralPath $_} | Select-Object -First 1
+ if(!$vivado){throw "Vivado 2025.1 executable not found. Please locate vivado.bat."}
  $export=Join-Path $WorkingCopy "Vivado\export_current_project.tcl"
  $out=Join-Path $WorkingCopy "Vivado\current_timestamp_v3"
  New-Item -ItemType Directory -Force -Path $out | Out-Null
@@ -88,16 +97,24 @@ if($VivadoXpr){
  }
 }else{Write-Warning "Current Vivado .xpr unspecified; full current Tcl export pending."}
 
-# Stage additions; do not modify original top-level GUI/Vivado/Vitis snapshot.
-& git.exe -C $WorkingCopy add -- GUI/cpp_qt6_realtime_v1 GUI/ethernet_tc_tm_gui_v4.py Vitis/timestamp_v3_uart_off
+# Stage only existing files; no deletion or overwrite of old top-level snapshot.
+$gitPaths=@("GUI/cpp_qt6_realtime_v1","Vitis/timestamp_v3_uart_off")
+if(Test-Path -LiteralPath (Join-Path $WorkingCopy "GUI\ethernet_tc_tm_gui_v4.py")){$gitPaths+= "GUI/ethernet_tc_tm_gui_v4.py"}
+if($VivadoXpr){$gitPaths+="Vivado/current_timestamp_v3"}
+& git.exe -C $WorkingCopy add -- $gitPaths
 if($LASTEXITCODE -ne 0){throw "Git source staging failed"}
-if($VivadoXpr){& git.exe -C $WorkingCopy add -- Vivado/current_timestamp_v3}
-& git.exe -C $WorkingCopy add -f -- Boot/TIMESTAMP_V3_UART_OFF_20261114/BOOT.BIN
-& git.exe -C $WorkingCopy add -- Boot/TIMESTAMP_V3_UART_OFF_20261114/original_windows_paths.bif
+& git.exe -C $WorkingCopy add -f -- "Boot/TIMESTAMP_V3_UART_OFF_20261114/BOOT.BIN"
+if($LASTEXITCODE -ne 0){throw "Git boot staging failed"}
+if(Test-Path -LiteralPath (Join-Path $WorkingCopy "Boot\TIMESTAMP_V3_UART_OFF_20261114\original_windows_paths.bif")){
+ & git.exe -C $WorkingCopy add -- "Boot/TIMESTAMP_V3_UART_OFF_20261114/original_windows_paths.bif"
+ if($LASTEXITCODE -ne 0){throw "Git BIF staging failed"}
+}
 Write-Host "===== STAGED CHANGES ====="
 & git.exe -C $WorkingCopy diff --cached --stat
+Write-Host "===== UNCOMMITTED FILES ====="
+& git.exe -C $WorkingCopy status --short
 Write-Warning "PUBLIC repository: review licenses, secrets and compiled FPGA vendor IP before committing."
 Write-Host "STAGING_ONLY=True"
 Write-Host "WORKING_COPY=$WorkingCopy"
 Write-Host "BRANCH=$branch"
-Write-Host "Review then commit/push explicitly. No automatic publication of local files."
+Write-Host "NEXT=Review staged files, then commit/push (no automatic publication)."
