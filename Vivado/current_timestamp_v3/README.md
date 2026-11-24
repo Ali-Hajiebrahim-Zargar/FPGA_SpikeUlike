@@ -1,6 +1,6 @@
 # Mercury XU5 Timestamp V3 — Vivado 2025.1
 
-**Status: Block Design source files are present, but a fully reproducible bitstream build is NOT verified.**
+**Status: clean Windows Vivado 2025.1 Block Design and HDL wrapper creation verified on 2026-11-24; full bitstream build is NOT verified.**
 
 The V3 FPGA timer still uses the historical VHDL entity name
 FPGA_TIMESTAMP_TIMER_16, despite its 32-bit counter and telemetry V3 header.
@@ -36,7 +36,7 @@ issue that triggers BD::TCL 103-2021 in an empty project.
   earlier, non-V3 export).
 - Four exported Block Design Tcl files in block_designs/.
 - The November original-project export in project_rebuild.tcl.
-- hpu_aux_paer.xdc in constraints/.
+- Seven original XDC files and one historical board Tcl in constraints/; two original testbenches in sim/ (restored in PR #3).
 - Build/source docs, Vitis source and test BOOT.BIN elsewhere in the repo.
 
 ## Source control and generated outputs
@@ -60,27 +60,23 @@ project_rebuild.tcl is an **unaltered Vivado-generated historical snapshot**.
 It references the development machine's C:/xu5/... and C:/git/HPU_Core
 directories. It cannot be used as a relocatable standalone project script.
 
-The original export also lists files absent from the current V3 snapshot,
-including:
+## Candidate portable project preparation
 
-- Board constraints: ddr4_pl_fixed_pins.xdc,
-  board_fixed_current_ports.xdc, dac8568_pins.xdc,
-  bank66_lvcmos18_override.xdc, ad7266_adc_pins.xdc; plus
-  spike_programmer_pins.xdc (a distinct earlier copy exists under
-  Vivado/constraints, but equivalence was not checked).
-- Auxiliary project Tcl: Mercury_XU5_PE1_safe_existing_ports.tcl,
-  en_gmii2rgmii_ksz9031_timing.tcl, Mercury_XU5_PE1.tcl,
-  Mercury_XU5_timing.tcl, en_gmii2rgmii_loc.tcl, scripts/settings.tcl.
-- External/generated logic: en_gmii2rgmii.edn, the original project's
-  synth checkpoint DCP, and IIT:IIT_lib:HPU_Core:4.0.
-- Simulation sources: tb_axis_spike_programmer.vhd,
-  tb_axis_cmd_packet_router.vhd.
+Run on a fresh, short output path. This new entry point is **not yet executed in Vivado**:
 
-Do not copy vendor-licensed EDN, DCP, generated IP or third-party HPU source
-into this PUBLIC repository until redistribution rights are verified.
-The present V3 Block Design preflight is **not** a claim that constraints,
-timing closure, top-level port mapping or the released BOOT.BIN can be
-regenerated. A Vivado clean-room run on Windows is still required.
+    vivado -mode batch -source rebuild_project_from_repo.tcl -tclargs C:/v3p1 C:/FPGA/HPU_Core C:/FPGA/Mercury_XU5_PE1_Reference_Design
+
+The two external repositories must be at the pinned commits documented in the root README.
+It reuses the verified BD procedure, checks telemetry/timestamp generics, makes the HDL wrapper,
+registers the upstream EDN, active constraints and settings hook, and registers the testbenches.
+The original ADC XDC is preserved; only the build copy excludes four stale debug-hub commands.
+The original simulation-only board and GMII Tcl are retained as historical/upstream inputs, not
+activated for implementation. The generated board_safety.xdc applies the pinned Enclustra
+overtemperature shutdown and unused-pin PULLNONE settings explicitly. No guessed pin changes,
+incremental DCP, legacy top generic, generated products or bitstream are committed.
+Success marker: XU5_PROJECT_PREPARED. This does not launch synthesis or implementation.
+Check IP output generation, synthesis, implementation, full port/IOSTANDARD mapping, DRC,
+timing, XSA and boot/hardware behaviour before claiming reproducibility or using a new bitstream.
 
 ## Error identification
 
@@ -93,6 +89,4 @@ regenerated. A Vivado clean-room run on Windows is still required.
 - Windows path >260 bytes during archive_project: a separate archive
   limitation, not the module-reference error.
 
-**Validation:** repository inventory and generated-script inspection only;
-the new rebuild script has not been executed in Vivado by the author of this
-fix.
+**Validation:** the BD-only script and wrapper generation ran successfully on the new laptop in Vivado 2025.1. Reported G_VERSION=0x03, G_HPU_SOURCE_ID=09, G_MAX_PAYLOAD_BYTES=256 and divider=100. The candidate full-project preparation script is still untested.
