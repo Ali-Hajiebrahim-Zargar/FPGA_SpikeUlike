@@ -1,0 +1,6 @@
+the_ROM_image:
+{
+    [bootloader, destination_cpu=a53-0] C:/vitis_timestamp_v3/platform/export/platform/sw/boot/fsbl.elf
+    [destination_device=pl] C:/xu5/exports/TIMESTAMP_STEP201_20261111_150336/TIMESTAMP_1US_V3_XU5_TEST.bit
+    [destination_cpu=a53-0] C:/vitis_timestamp_v3/lwip_echo_server/build/lwip_echo_server.elf
+}

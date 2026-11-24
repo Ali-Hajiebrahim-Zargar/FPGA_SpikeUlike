@@ -1,0 +1,18 @@
+Mercury XU5 native C++/Qt port validation
+========================================
+Date: 2026-11-16
+Source: supplied Python GUI V4, copied unchanged in reference/.
+
+PASS: C++17 source core compiled on Linux with g++ -std=c++17 -Wall -Wextra -Wpedantic -O2.
+PASS: CMake -DXU5_BUILD_GUI=OFF build.
+PASS: ctest protocol_compatibility: V1/V2 commands, ADC pair bit order, V1/V3 telemetry,
+      HPU endian decode, 32-bit FPGA timestamp rollover, 250k retained samples,
+      peak envelope, TCP fragmented V3, expected DAC integer period.
+PASS: synthetic C++ benchmark executed; it excludes all real I/O and GUI time.
+
+NOT VERIFIED: Qt 6 Widgets/Network GUI compile, because Qt headers/libraries unavailable here.
+NOT VERIFIED: Native Windows EXE or windeployqt deployment.
+NOT VERIFIED: Real Mercury XU5 ADC frequency behavior, packet loss, firmware, board timing,
+              UDP throughput, graphical FPS or end-to-end latency.
+
+No changes to any SD card, Golden BOOT.BIN, FPGA bitstream, Vitis project or board.
