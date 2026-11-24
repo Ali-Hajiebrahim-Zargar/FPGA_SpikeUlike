@@ -39,6 +39,21 @@ issue that triggers BD::TCL 103-2021 in an empty project.
 - hpu_aux_paer.xdc in constraints/.
 - Build/source docs, Vitis source and test BOOT.BIN elsewhere in the repo.
 
+## Source control and generated outputs
+
+Rebuild from the checked-in Tcl, VHDL and constraints; do not commit the
+generated XPR or its project-specific .srcs, .gen, .runs, .cache, .sim,
+.hw, .ip_user_files or .ipdefs trees. The root .gitignore excludes those
+containers, intermediate checkpoints, logs, and routine build artifacts.
+Choose a fresh short output directory outside the checkout (recommended)
+or under build/. Keep canonical RTL, constraints and any essential IP
+inputs outside generated project directories before ignoring them.
+The exported BD Tcl and intentional release artifacts are exceptions,
+not scratch files. The published BOOT.BIN and Qt distribution are retained.
+If a necessary IP configuration or vendor netlist is not reproducible,
+document its pinned upstream source or preserve a redistributable input
+outside the ignored directories; do not silently discard it.
+
 ## Remaining gaps for a full portable bitstream rebuild
 
 project_rebuild.tcl is an **unaltered Vivado-generated historical snapshot**.

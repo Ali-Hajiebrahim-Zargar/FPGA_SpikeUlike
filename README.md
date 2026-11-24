@@ -73,7 +73,13 @@ FPGA_SpikeUlike/
 
 `Vivado/src_snapshot.rar.b64` is a Base64-encoded copy of the full captured custom `src` archive. Decode it back to `src_snapshot.rar` before extracting it. Its content is listed in `Vivado/src_snapshot_manifest.txt`. The most important integration modules are additionally present as normal text files under `Vivado/src/` so that they can be reviewed directly on GitHub.
 
-Generated Vivado/Vitis outputs such as `.bit`, `.xsa`, `.elf`, `BOOT.BIN`, `.runs`, generated BSPs, and build directories are intentionally not version controlled. They are reproducible build products and are excluded by `.gitignore`.
+## Current Timestamp V3 and repository policy
+
+For the November Timestamp V3 design, start with [Vivado/current_timestamp_v3/README.md](Vivado/current_timestamp_v3/README.md) and the source-first [Block Design rebuild script](Vivado/current_timestamp_v3/rebuild_bd_from_repo.tcl). The October export below is historical and does not describe an independently verified V3 bitstream rebuild.
+
+Vivado project containers (`.xpr`, generated `.srcs/`, `.runs/`, `.gen/`, `.cache/`, etc.), checkpoints, logs, and routine FPGA/Vitis build outputs are excluded by `.gitignore`. Keep canonical HDL, constraints, Tcl rebuild scripts, and any essential redistributable IP inputs in source-controlled directories outside generated projects. The exported Block Design Tcl is an intentional rebuild input, not disposable tool output. Do not ignore or delete the only copy of a required source file. Use a fresh output directory outside the checkout or under an ignored `build/` directory.
+
+The explicitly published [Timestamp V3 test BOOT.BIN](Boot/TIMESTAMP_V3_UART_OFF_20261114/BOOT.BIN) and [Qt Windows distribution](GUI/cpp_qt6_realtime_v1/dist/) are intentional distribution artifacts, not required inputs for reconstructing the Vivado project. Retained historical reports are reference/validation records, not build inputs. Full independent bitstream and BOOT.BIN regeneration remains unverified; see the V3 README for missing dependencies.
 
 ---
 
@@ -667,7 +673,7 @@ axis_hpu_telemetry_adapter.vhd
 
 The final HPU and SpikeUlike pin constraints are under `Vivado/constraints/`.
 
-`Vivado/Mercury_XU5_export.tcl` is a Vivado 2025.1 block-design export from the development workspace. It requires the module-reference source files to be added before sourcing it. The source archive plus the HPU overlay files are therefore kept together in this repository.
+`Vivado/Mercury_XU5_export.tcl` is the **historical October** Vivado 2025.1 block-design export from the development workspace, not the current Timestamp V3 entry point. It requires the module-reference source files to be added before sourcing it. The source archive plus the HPU overlay files are therefore kept together in this repository.
 
 ---
 
