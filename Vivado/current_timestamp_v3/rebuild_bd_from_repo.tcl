@@ -110,10 +110,9 @@ puts "XU5_MODULE_PREFLIGHT_OK: [llength $xu5_module_files] unique entity referen
 # Sourcing generated BD Tcl is now safe with respect to missing module refs.
 # Tcl 'return 3' in an exported BD script can be a normal source return value,
 # so inspect the resulting actual design, not merely a zero Tcl error status.
-set xu5_bd_return [source $xu5_bd_script]
-if {$xu5_bd_return ne "" && $xu5_bd_return ne "0"} {
-    error "BD script did not complete: $xu5_bd_return"
-}
+source $xu5_bd_script
+# The generated script's final Tcl value may be nonempty even on success.
+# Check the resulting BD objects and run validation, not that return value.
 if {[llength [get_files -quiet Mercury_XU5.bd]] == 0} {
     error "BD creation failed: Mercury_XU5.bd is absent"
 }
