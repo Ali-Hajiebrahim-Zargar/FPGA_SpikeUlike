@@ -2,23 +2,53 @@
 __pycache__/
 *.py[cod]
 
-# Vivado generated/build outputs
+# Vivado: disposable project containers and tool-generated directories.
+# Keep canonical RTL, XDC, Tcl and necessary IP inputs outside *.srcs/.
+*.xpr
+*.xpr.bak
+*.srcs/
+*.runs/
+*.cache/
+*.gen/
+*.sim/
+*.hw/
+*.ip_user_files/
+*.ipdefs/
+*.data/
+*.tmp/
+.Xil/
+xsim.dir/
+.ipcache/
+
+# Vivado: disposable build products, logs, checkpoints and simulator state.
 *.jou
 *.log
 *.str
 *.dmp
 *.wdb
+*.wlf
+*.vcd
 *.bit
 *.bin
 *.xsa
 *.ltx
 *.hw
-*.runs/
-*.cache/
-*.gen/
-*.sim/
-*.ip_user_files/
-.Xil/
+*.dcp
+*.bxml
+*.pb
+*.rpx
+*.wdf
+*.xpe
+
+# Project directories should be outside the checkout or under build/.
+# Ignore output locations of the historical and current reconstruction entry points.
+/Vivado/myproj/
+/Vivado/Mercury_XU5_PE1/
+/Vivado/current_timestamp_v3/myproj/
+/Vivado/current_timestamp_v3/Mercury_XU5_PE1/
+/Vivado/current_timestamp_v3/vivado_source_archive.zip
+/myproj/
+/Mercury_XU5_PE1/
 
 # Vitis generated/build outputs
 build/
@@ -29,6 +59,9 @@ _ide/
 platform/export/
 *.elf
 BOOT.BIN
+
+# Explicitly published boot artifact, not arbitrary local Bootgen output.
+!/Boot/TIMESTAMP_V3_UART_OFF_20261114/BOOT.BIN
 
 # OS/editor
 .DS_Store
