@@ -36,7 +36,7 @@ Windows laptop                         Mercury XU5
 5. Leave the DNS server addresses blank for this dedicated connection.
 6. Click **OK**, then **Close**.
 
-Administrator privileges or authorization from the IT department may be required on a managed workstation. Do not modify the organization's security policies or unrelated network adapters.
+
 
 ## 3. Verify the configuration
 
